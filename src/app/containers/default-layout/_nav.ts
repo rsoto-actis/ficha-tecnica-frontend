@@ -5,26 +5,26 @@ export const navItems: INavData[] = [
     name: 'Dashboard',
     url: '/dashboard',
     iconComponent: { name: 'cil-speedometer' },
-    badge: {
+    /*badge: {
       color: 'info',
       text: 'NEW'
-    }
+    }*/
   },
   {
     name: 'Datos públicos',
     url: '/base/tables',
     iconComponent: { name: 'cil-description' }
   },
-  {
+  /*{
     title: true,
     name: 'Theme'
   },  
-  /*{
+  {
     name: 'Colors',
     url: '/theme/colors',
     iconComponent: { name: 'cil-drop' }
   },*/
-  {
+  /*{
     name: 'Typography',
     url: '/theme/typography',
     linkProps: { fragment: 'someAnchor' },
@@ -186,7 +186,7 @@ export const navItems: INavData[] = [
         url: '/icons/brands'
       }
     ]
-  },
+  },*/
   {
     name: 'Notifications',
     url: '/notifications',
@@ -210,7 +210,7 @@ export const navItems: INavData[] = [
       }
     ]
   },
-  {
+  /*{
     name: 'Widgets',
     url: '/widgets',
     iconComponent: { name: 'cil-calculator' },
@@ -263,5 +263,5 @@ export const navItems: INavData[] = [
     url: 'https://coreui.io/product/angular-dashboard-template/',
     iconComponent: { name: 'cil-layers' },
     attributes: { target: '_blank' }
-  }
+  }*/
 ];

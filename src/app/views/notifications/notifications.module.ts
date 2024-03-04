@@ -59,6 +59,9 @@ import { AppToastComponent } from './toasters/toast-simple/toast.component';
     ProgressModule,
     IconModule
   ],
+  exports : [
+    ModalModule
+  ]
 })
 export class NotificationsModule {
 }

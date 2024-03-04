@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { 
   FormBuilder, 
   FormGroup, 
   Validators,
   FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { first } from 'rxjs';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -13,6 +15,13 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit{
 
+  @HostListener('document:keypress', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      this.login(); 
+    }
+  }
+
 
   public loginData! : FormGroup;
   public message    : string  = "";
@@ -20,7 +29,8 @@ export class LoginComponent implements OnInit{
 
   constructor(
     private router         : Router,
-    private formBuilder    : FormBuilder
+    private formBuilder    : FormBuilder,
+    private authService    : AuthService
   ) {
 
     this.loginData = this.formBuilder.group({
@@ -53,9 +63,38 @@ export class LoginComponent implements OnInit{
     }
 
     else if ( this.loginData.value.username != '' && this.loginData.value.password != '' ){ 
-      localStorage.setItem('token','aaaa');
+      this.authService
+        .login({
+          username : this.loginData.value.username,
+          password : this.loginData.value.password
+        })
+        .pipe(first())
+        .subscribe(
+          ( result : any ) => {
+          },
+          ( error : any) => {
+            try{
+              
+              let json = JSON.parse(error.error.text.replace("\'","\"").replace("\'","\"").replace("\'","\"").replace("\'","\""));
+
+              localStorage.setItem('token', json.token);
+
+              this.router.navigateByUrl('/dashboard');
+
+              this.loginError = false;
+            }
+            catch(e){
+              this.loginError = true;
+              this.message = error.error.text;              
+            }
+            
+          }
+        );
+
+        /* bvenegas - gore123456*/
+      /*localStorage.setItem('token','aaaa');
       this.loginError = false;
-      this.router.navigateByUrl('/dashboard');
+      this.router.navigateByUrl('/dashboard');*/
     }
   }
 

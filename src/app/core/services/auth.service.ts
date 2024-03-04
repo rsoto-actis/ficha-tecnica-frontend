@@ -6,21 +6,16 @@ import { environment } from './../../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
-export class ItemsService {
+export class AuthService {
 
   private url_base: string = environment.base_url;
 
   constructor(private http: HttpClient) {}
 
-  public getAllItems(): Observable<Array<any>> {
-    return this.http.get<Array<any>>(
-      `${this.url_base}api/items/all`
-    );
-  }
-
-  public getSubCategories( area_id : number ): Observable<Array<any>> {
-    return this.http.get<Array<any>>(
-      `${this.url_base}api/items/sub-item/${area_id}`
+  public login( credentials : any ){
+    return this.http.post<Array<any>>(
+        `${this.url_base}auth/login`,
+        credentials
     );
   }
 

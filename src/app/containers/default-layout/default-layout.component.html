@@ -27,11 +27,11 @@
       dropdownMode="close"
     />
   </ng-scrollbar>
-  <c-sidebar-toggler
+  <!--<c-sidebar-toggler
     *ngIf="!sidebar.narrow"
     toggle="unfoldable"
     cSidebarToggle="sidebar"
-  />
+  />-->
 </c-sidebar>
 
 <!--main-->
@@ -45,5 +45,22 @@
     </c-container>
   </div>
   <!--app footer-->
+  <button (click)="toggleLiveDemo()" cButton>Launch demo modal</button>
+    
+  <c-modal id="liveDemoModal" [visible]="visible" (visibleChange)="handleLiveDemoChange($event)">
+    <c-modal-header>
+      <h5 cModalTitle>Cerrar sesión</h5>
+      <button (click)="toggleLiveDemo()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>Está a punto de cerrar la sesión, ¿desea continuar?</c-modal-body>
+    <c-modal-footer>
+      <button (click)="toggleLiveDemo()" cButton color="secondary">
+        No
+      </button>
+      <button cButton color="danger" (click)="confirmLogout()">Si</button>
+    </c-modal-footer>
+  </c-modal>
   <app-default-footer />
 </div>
+
+

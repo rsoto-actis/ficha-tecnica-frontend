@@ -17,13 +17,14 @@ export class ProyectosService {
 
   public getAllProyects(): Observable<Array<any>> {
     return this.http.get<Array<any>>(
-      `${this.url_base}proyectos/all`
+      `${this.url_base}api/proyectos/all`
     );
   }
 
   public getAllTowns(): Observable<Array<any>> {
+    console.log(`${this.url_base}api/ficha-tecnica/towns`)
     return this.http.get<Array<any>>(
-      `${this.url_base}ficha-tecnica/towns`
+      `${this.url_base}api/ficha-tecnica/towns`
     );
   }
 
@@ -39,14 +40,14 @@ export class ProyectosService {
     };
 
     return this.http.post<Array<any>>(
-      `${this.url_base}ficha-tecnica/`,
+      `${this.url_base}api/ficha-tecnica/`,
       json
     );
   }
 
   public insertTownsCategories( json : any ): Observable<Array<any>> {
     return this.http.post<Array<any>>(
-      `${this.url_base}ficha-tecnica/towns-category`,
+      `${this.url_base}api/ficha-tecnica/towns-category`,
       json
     );
   }
