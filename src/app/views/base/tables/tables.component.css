@@ -1,0 +1,17 @@
+.filter-container{
+    display: flex;
+}
+
+.item {
+    padding: 5px;
+    margin: 5px;
+    min-width: 48%;
+    max-width: 100%;
+}
+
+.item-2 {
+    padding: 5px;
+    margin: 5px;
+    min-width: 25%;
+    max-width: 48%;
+}
