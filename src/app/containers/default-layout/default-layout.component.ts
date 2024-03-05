@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
-import { navItems } from './_nav';
-import { Router } from '@angular/router';
+import { navItems       } from './_nav';
+import { Router         } from '@angular/router';
 import { GeneralService } from 'src/app/core/services/general.service';
+import { jwtDecode      } from "jwt-decode";
 
 @Component({
   selector: 'app-dashboard',
@@ -40,10 +41,16 @@ export class DefaultLayoutComponent implements OnInit {
         this.toggleLiveDemo();
       }
     })
-
     /* Redirije en caso de no haber token */
     if ( localStorage.getItem('token') != "" && localStorage.getItem('token') != null ){
+      let decoded   = jwtDecode(localStorage.getItem('token') + "");
+      let exp       = new Date(parseInt(decoded.exp + "") * 1000);
+      let timestamp = new Date();
       
+      if ( exp.getTime() <= timestamp.getTime() ) {
+        localStorage.clear();
+        this.router.navigateByUrl('/login');
+      } 
     }
     else{
       this.router.navigateByUrl('/login');

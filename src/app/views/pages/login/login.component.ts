@@ -63,33 +63,51 @@ export class LoginComponent implements OnInit{
     }
 
     else if ( this.loginData.value.username != '' && this.loginData.value.password != '' ){ 
-      this.authService
-        .login({
-          username : this.loginData.value.username,
-          password : this.loginData.value.password
-        })
-        .pipe(first())
-        .subscribe(
-          ( result : any ) => {
-          },
-          ( error : any) => {
-            try{
-              
-              let json = JSON.parse(error.error.text.replace("\'","\"").replace("\'","\"").replace("\'","\"").replace("\'","\""));
-
-              localStorage.setItem('token', json.token);
+      try{
+        
+        this.authService
+          .login({
+            username : this.loginData.value.username,
+            password : this.loginData.value.password
+          })
+          .pipe(first())
+          .subscribe(
+            ( result : any ) => {
+              localStorage.setItem('token', result.token);
 
               this.router.navigateByUrl('/dashboard');
 
               this.loginError = false;
+
+            },
+            ( error : any) => {
+              console.log(error)
+              try{
+                
+                let json = JSON.parse(error.error.text.replace("\'","\"").replace("\'","\"").replace("\'","\"").replace("\'","\""));
+
+                localStorage.setItem('token', json.token);
+
+                this.router.navigateByUrl('/dashboard');
+
+                this.loginError = false;
+              }
+              catch(e){
+                console.log(e)
+                this.loginError = true;
+                //this.message = error.error.text; 
+                this.message    = "Error de servidor, por favor contacte a soporte.";             
+              }
+              
             }
-            catch(e){
-              this.loginError = true;
-              this.message = error.error.text;              
-            }
-            
-          }
-        );
+          );
+      }
+      catch(e){
+        console.log("2")
+        console.log(e)
+        this.loginError = true;
+        this.message    = "Error de servidor, por favor contacte a soporte.";
+      }
 
         /* bvenegas - gore123456*/
       /*localStorage.setItem('token','aaaa');
