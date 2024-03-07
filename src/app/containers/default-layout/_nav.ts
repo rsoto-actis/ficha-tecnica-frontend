@@ -13,7 +13,22 @@ export const navItems: INavData[] = [
   {
     name: 'Datos públicos',
     url: '/base/tables',
-    iconComponent: { name: 'cil-description' }
+    iconComponent: { name: 'cil-star' }
+  },
+  {
+    name: 'Proyectos',
+    url: '/projects',
+    iconComponent: { name: 'cil-notes' },
+    children: [
+      /*{
+        name: 'Ver',
+        url: '/projects/watch',
+      },*/
+      {
+        name: 'Listado',
+        url: '/projects/category-assign'
+      },
+    ]
   },
   /*{
     title: true,
@@ -187,7 +202,7 @@ export const navItems: INavData[] = [
       }
     ]
   },*/
-  {
+  /*{
     name: 'Notifications',
     url: '/notifications',
     iconComponent: { name: 'cil-bell' },
@@ -209,7 +224,7 @@ export const navItems: INavData[] = [
         url: '/notifications/toasts'
       }
     ]
-  },
+  },*/
   /*{
     name: 'Widgets',
     url: '/widgets',

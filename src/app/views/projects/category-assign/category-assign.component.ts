@@ -5,16 +5,20 @@ import { ItemsService } from 'src/app/core/services/items.service';
 import { ProyectosService } from 'src/app/core/services/proyectos.service';
 
 @Component({
-  selector: 'app-public-data',
+  selector: 'app-category-assign',
   standalone: false,
-  templateUrl: './public-data.component.html',
-  styleUrl: './public-data.component.scss'
+  templateUrl: './category-assign.component.html',
+  styleUrl: './category-assign.component.scss'
 })
-export class PublicDataComponent {
+export class CategoryAssignComponent {
+
 
   @ViewChildren('checkbox') checkboxes! : QueryList<ElementRef>;
   @ViewChild('initPeriod')  initPeriod! : ElementRef;
   @ViewChild('endPeriod')   endPeriod!  : ElementRef;
+
+  public liveDemoVisible : boolean = false;
+  public choosenProject  : any     = {};
 
 
   public collapses : any[] = [false, false, false, false];
@@ -24,7 +28,7 @@ export class PublicDataComponent {
   public projects        : any[] = [];
   public selectedProject : any   = {};
   public filteredData    : any[] = [];
-  public projectsForm    : FormGroup;
+  public projectsForm!   : FormGroup;
 
 
   /* Filtros */
@@ -59,9 +63,8 @@ export class PublicDataComponent {
 
   constructor(
     private proyectoService : ProyectosService,
-    private itemsService    : ItemsService 
-  ) { 
-
+    private itemsService    : ItemsService
+  ){
     this.proyectoService
       .getProyectsWithFilters('','','','','',0,0)
       .pipe(first())
@@ -90,8 +93,21 @@ export class PublicDataComponent {
     this.changeFilters('None',null);
     this.getAllTowns();
     this.getAllItems();
+  }
 
-    
+  toggleLiveDemo( ts : any ) {
+    this.choosenProject = ts;
+
+    console.log(ts)
+    this.liveDemoVisible = !this.liveDemoVisible;
+  }
+
+  closeModal() {
+    this.liveDemoVisible = false;
+  }
+
+  handleLiveDemoChange(event: boolean) {
+    this.liveDemoVisible = event;
   }
 
   ngOnInit(): void {
@@ -432,5 +448,4 @@ export class PublicDataComponent {
     // @ts-ignore
     this.collapses[id] = !this.collapses[id];
   }
-
 }

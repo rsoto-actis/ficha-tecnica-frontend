@@ -1,0 +1,208 @@
+<c-card class="mb-4">
+    <c-card-header>
+        <div class="flex-container" style="width: 100%; overflow: hidden;">
+            <div style="float: left">
+                <h4 class="card-title mb-0" id="traffic">Listado de proyectos</h4>
+            </div>
+            <div style="float: right;">
+                <a (click)="toggleCollapse(0)" cButton class="me-1" color="warning" *ngIf="collapses[0]">Cerrar filtros</a>
+                <a (click)="toggleCollapse(0)" cButton class="me-1" color="primary" *ngIf="!collapses[0]">Ver filtros</a>
+            </div>
+        </div>
+    </c-card-header>
+    <c-card-body>
+        <div [visible]="collapses[0]" cCollapse>
+            <c-card class="shadow mt-3" style="z-index: 100;">
+                <c-card-body>
+                <div class="filter-container">
+                    <div class="item">
+                    <label for="townSelect">Comuna</label><br/>
+                    <select (change)="changeFilters('town', $event)" style="color: black" id="townSelect" class="form-select" aria-label="Default select example">
+                        <option selected>Selecciona una comuna</option>
+                        <option *ngFor="let col of townsList" [value]="col.idComuna">{{ col.nomComuna }}</option>
+                    </select>
+                    </div>
+                    <div class="item">
+                    <label for="townSelect">Categoría</label><br/> 
+                    <select (change)="changeFilters('category', $event)" style="color: black" id="townSelect" class="form-select">
+                        <option selected>Selecciona una categoría</option>
+                        <option *ngFor="let col of categories" [value]="col.name">{{ col.name }}</option>
+                    </select>
+                    </div>
+                </div>
+                <div class="filter-container">
+                    <div class="item">
+                    <label for="townSelect">Sub categoría</label><br/>
+                    <select (change)="changeFilters('subcategory', $event)" style="color: black" id="townSelect" class="form-select">
+                        <option selected>Selecciona una sub categoría</option>
+                        <option *ngFor="let col of subCategories" [value]="col.name">{{ col.name }}</option>
+                    </select>
+                    </div>
+                    <div class="item">
+                    <br>
+                    <input #checkbox class="form-check-input" type="checkbox" value="" id="piramidal" (click)="piramidalClick()">
+                    <label class="form-check-label" for="piramidal">
+                        Piramidal
+                    </label>
+                    </div>
+                </div>
+                <div class="filter-container">
+                    <div class="item">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Periodo inicial</span>
+                        <input #initPeriod type="text" class="form-control" placeholder="Año de inicio" aria-label="Año de inicio" aria-describedby="basic-addon1" value="2015" (keyup)="changeFilters('sp', $event)">
+                    </div>            
+                    </div>
+                    <div class="item">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Periodo final</span>
+                        <input #endPeriod type="text" class="form-control" placeholder="Periodo final" aria-label="Periodo final" aria-describedby="basic-addon1" value="2024" (keyup)="changeFilters('ep', $event)">
+                    </div>
+                    </div>
+                </div>
+                <div class="filter-container">
+                    <hr>
+                    <div class="item">                    
+                    <input #checkbox class="form-check-input" type="checkbox" value="" id="allUrban" (click)="allUrban = !allUrban ;allRural = false; provRural = false; townRural = false; changeFilters('','')">
+                    <label class="form-check-label" for="allUrban">
+                        Urbano
+                    </label><br>
+        
+                    <input #checkbox class="form-check-input" type="checkbox" value="" id="provUrban" (click)="provUrban = !provUrban; townUrban = false; changeFilters('','')">
+                    <label class="form-check-label" for="provUrban">
+                        Provincia
+                    </label><br>
+        
+                    <input #checkbox class="form-check-input" type="checkbox" value="" id="townUrban" (click)="townUrban = !townUrban; provUrban = false; changeFilters('','')">
+                    <label class="form-check-label" for="townUrban">
+                        Comunas
+                    </label><br>
+                    </div> 
+                    <div class="item">
+                    <input #checkbox class="form-check-input" type="checkbox" value="" id="allRural" (click)="allRural = !allRural; allUrban = false; provUrban = false; townUrban = false;changeFilters('','')">
+                    <label class="form-check-label" for="allRural">
+                        Rural
+                    </label><br>
+        
+                    <input #checkbox class="form-check-input" type="checkbox" value="" id="provRural" (click)="provRural = !provRural; townRural = false; changeFilters('','')">
+                    <label class="form-check-label" for="provRural">
+                        Provincia
+                    </label><br>
+        
+                    <input #checkbox class="form-check-input" type="checkbox" value="" id="townRural" (click)="townRural = !townRural; provRural = false; changeFilters('','')">
+                    <label class="form-check-label" for="townRural">
+                        Comunas
+                    </label>  
+                    </div>
+                </div>
+                <div class="filter-container">
+                    <div class="item">
+                    <a (click)="cleanFilters(); piramidal = false;" cButton class="me-1" color="danger">Limpiar filtros</a>
+                    
+                    </div>
+                </div>
+                </c-card-body>
+            </c-card>
+        </div>
+        <table cTable>
+            <thead>
+                <tr>
+                    <th scope="col">Comuna</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Alcance</th>
+                    <th scope="col">Fecha</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th>
+                        <input type="text" class="form-control" placeholder="" aria-label="Username"
+                            aria-describedby="basic-addon1" (keyup)="filterBy('town', $event)">
+                    </th>
+                    <th>
+                        <input type="text" class="form-control" placeholder="" aria-label="Username"
+                            aria-describedby="basic-addon1" (keyup)="filterBy('name', $event)">
+                    </th>
+                    <th>
+                        <input type="text" class="form-control" placeholder="" aria-label="Username"
+                            aria-describedby="basic-addon1" (keyup)="filterBy('alcance', $event)">
+                    </th>
+                    <th>
+                        <input type="text" class="form-control" placeholder="" aria-label="Username"
+                            aria-describedby="basic-addon1" (keyup)="filterBy('ammount', $event)">
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+        </table>
+    </c-card-body>    
+</c-card>
+<c-card class="mb-4" style="height: 60vh; overflow-y: scroll;">
+    <c-card-body>
+        
+
+        <table cTable>
+            <tbody>
+              <tr *ngFor='let ts of filteredData'>
+                  <td>{{ts.town_name}}</td>
+                  <td>{{ts.name}}</td>
+                  <td>{{ts.alcance_code}}</td>
+                  <td>{{ formatDate(ts.created) }}</td>
+                  <td>
+                    <c-dropdown>
+                        <button cButton cDropdownToggle color="primary" style="margin: auto 0">
+                            <i class="cis-chevron-bottom-alt"></i>
+                        </button>
+                        <ul cDropdownMenu>
+                          <li><h6 cDropdownHeader>Acciones</h6></li>
+                          <li><a (click)="toggleLiveDemo(ts)" cDropdownItem>Asignar categorías</a></li>
+                          <!--<li><a routerLink="./" cDropdownItem>Another action</a></li>
+                          <li><a routerLink="./" cDropdownItem>Something else here</a></li>
+                          <li>
+                            <hr cDropdownDivider>
+                          </li>
+                          <li>
+                            <button [routerLink]="'/buttons'" cDropdownItem>Separated link</button>
+                          </li>-->
+                        </ul>
+                      </c-dropdown>
+                  </td>
+              </tr>              
+          </tbody>
+        </table>
+    </c-card-body>
+</c-card>
+
+
+  <c-modal id="liveDemoModal" alignment="center" [visible]="liveDemoVisible" (visibleChange)="handleLiveDemoChange($event)" size="xl">
+    <c-modal-header>
+      <h5 cModalTitle>Asignar categoría</h5>
+      <button (click)="closeModal()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <h6><b>Nombre del proyecto: </b>{{ choosenProject.name }}</h6>
+        <h6><b>Comuna: </b>{{ choosenProject.town_name }}</h6>
+        <h6><b>Alcance: </b>{{ choosenProject.alcance_nombre }}</h6>
+
+        <hr>
+
+        <table cTable>
+            <thead>
+                <th class="text-center">Piramidal</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-center">
+                        <input #piramidalEdit class="form-check-input" type="checkbox" value="" id="piramidalEdit">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </c-modal-body>
+    <c-modal-footer>
+      <button (click)="closeModal()" cButton color="secondary">
+        Cerrar ventana
+      </button>
+      <button cButton color="primary">Guardar cambios</button>
+    </c-modal-footer>
+  </c-modal>
+

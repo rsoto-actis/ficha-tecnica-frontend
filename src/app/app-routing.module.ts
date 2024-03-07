@@ -7,6 +7,7 @@ import { Page500Component } from './views/pages/page500/page500.component';
 import { LoginComponent } from './views/pages/login/login.component';
 import { RegisterComponent } from './views/pages/register/register.component';
 import { PublicDataComponent } from './views/pages/public-data/public-data.component';
+import { CategoryAssignComponent } from './views/projects/category-assign/category-assign.component';
 
 const routes: Routes = [
   {
@@ -70,6 +71,14 @@ const routes: Routes = [
         path: 'pages',
         loadChildren: () =>
           import('./views/pages/pages.module').then((m) => m.PagesModule)
+      },
+
+      //-- New routes
+
+      {
+        path: 'projects',
+        loadChildren: () =>
+          import('./views/projects/projects.module').then((m) => m.ProjectsModule)
       },
     ]
   },

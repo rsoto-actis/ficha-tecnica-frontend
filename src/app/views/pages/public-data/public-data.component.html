@@ -20,99 +20,99 @@
               </div>
             </div>
             
-              <div [visible]="collapses[0]" cCollapse>
-                <c-card class="shadow mt-3" style="z-index: 100;">
-                  <c-card-body>
-                    <div class="filter-container">
-                      <div class="item">
-                        <label for="townSelect">Comuna</label><br/>
-                        <select (change)="changeFilters('town', $event)" style="color: black" id="townSelect" class="form-select" aria-label="Default select example">
-                          <option selected>Selecciona una comuna</option>
-                          <option *ngFor="let col of townsList" [value]="col.idComuna">{{ col.nomComuna }}</option>
-                        </select>
-                      </div>
-                      <div class="item">
-                        <label for="townSelect">Categoría</label><br/> 
-                        <select (change)="changeFilters('category', $event)" style="color: black" id="townSelect" class="form-select">
-                            <option selected>Selecciona una categoría</option>
-                            <option *ngFor="let col of categories" [value]="col.name">{{ col.name }}</option>
-                        </select>
+            <div [visible]="collapses[0]" cCollapse>
+              <c-card class="shadow mt-3" style="z-index: 100;">
+                <c-card-body>
+                  <div class="filter-container">
+                    <div class="item">
+                      <label for="townSelect">Comuna</label><br/>
+                      <select (change)="changeFilters('town', $event)" style="color: black" id="townSelect" class="form-select" aria-label="Default select example">
+                        <option selected>Selecciona una comuna</option>
+                        <option *ngFor="let col of townsList" [value]="col.idComuna">{{ col.nomComuna }}</option>
+                      </select>
+                    </div>
+                    <div class="item">
+                      <label for="townSelect">Categoría</label><br/> 
+                      <select (change)="changeFilters('category', $event)" style="color: black" id="townSelect" class="form-select">
+                          <option selected>Selecciona una categoría</option>
+                          <option *ngFor="let col of categories" [value]="col.name">{{ col.name }}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="filter-container">
+                    <div class="item">
+                      <label for="townSelect">Sub categoría</label><br/>
+                      <select (change)="changeFilters('subcategory', $event)" style="color: black" id="townSelect" class="form-select">
+                        <option selected>Selecciona una sub categoría</option>
+                        <option *ngFor="let col of subCategories" [value]="col.name">{{ col.name }}</option>
+                      </select>
+                    </div>
+                    <div class="item">
+                      <br>
+                      <input #checkbox class="form-check-input" type="checkbox" value="" id="piramidal" (click)="piramidalClick()">
+                      <label class="form-check-label" for="piramidal">
+                          Piramidal
+                      </label>
+                    </div>
+                  </div>
+                  <div class="filter-container">
+                    <div class="item">
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Periodo inicial</span>
+                        <input #initPeriod type="text" class="form-control" placeholder="Año de inicio" aria-label="Año de inicio" aria-describedby="basic-addon1" value="2015" (keyup)="changeFilters('sp', $event)">
+                      </div>            
+                    </div>
+                    <div class="item">
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Periodo final</span>
+                        <input #endPeriod type="text" class="form-control" placeholder="Periodo final" aria-label="Periodo final" aria-describedby="basic-addon1" value="2024" (keyup)="changeFilters('ep', $event)">
                       </div>
                     </div>
-                    <div class="filter-container">
-                      <div class="item">
-                        <label for="townSelect">Sub categoría</label><br/>
-                        <select (change)="changeFilters('subcategory', $event)" style="color: black" id="townSelect" class="form-select">
-                          <option selected>Selecciona una sub categoría</option>
-                          <option *ngFor="let col of subCategories" [value]="col.name">{{ col.name }}</option>
-                        </select>
-                      </div>
-                      <div class="item">
-                        <br>
-                        <input #checkbox class="form-check-input" type="checkbox" value="" id="piramidal" (click)="piramidalClick()">
-                        <label class="form-check-label" for="piramidal">
-                            Piramidal
-                        </label>
-                      </div>
+                  </div>
+                  <div class="filter-container">
+                    <hr>
+                    <div class="item">                    
+                      <input #checkbox class="form-check-input" type="checkbox" value="" id="allUrban" (click)="allUrban = !allUrban ;allRural = false; provRural = false; townRural = false; changeFilters('','')">
+                      <label class="form-check-label" for="allUrban">
+                          Urbano
+                      </label><br>
+          
+                      <input #checkbox class="form-check-input" type="checkbox" value="" id="provUrban" (click)="provUrban = !provUrban; townUrban = false; changeFilters('','')">
+                      <label class="form-check-label" for="provUrban">
+                          Provincia
+                      </label><br>
+          
+                      <input #checkbox class="form-check-input" type="checkbox" value="" id="townUrban" (click)="townUrban = !townUrban; provUrban = false; changeFilters('','')">
+                      <label class="form-check-label" for="townUrban">
+                          Comunas
+                      </label><br>
+                    </div> 
+                    <div class="item">
+                      <input #checkbox class="form-check-input" type="checkbox" value="" id="allRural" (click)="allRural = !allRural; allUrban = false; provUrban = false; townUrban = false;changeFilters('','')">
+                      <label class="form-check-label" for="allRural">
+                          Rural
+                      </label><br>
+          
+                      <input #checkbox class="form-check-input" type="checkbox" value="" id="provRural" (click)="provRural = !provRural; townRural = false; changeFilters('','')">
+                      <label class="form-check-label" for="provRural">
+                          Provincia
+                      </label><br>
+          
+                      <input #checkbox class="form-check-input" type="checkbox" value="" id="townRural" (click)="townRural = !townRural; provRural = false; changeFilters('','')">
+                      <label class="form-check-label" for="townRural">
+                          Comunas
+                      </label>  
                     </div>
-                    <div class="filter-container">
-                      <div class="item">
-                        <div class="input-group mb-3">
-                          <span class="input-group-text" id="basic-addon1">Periodo inicial</span>
-                          <input #initPeriod type="text" class="form-control" placeholder="Año de inicio" aria-label="Año de inicio" aria-describedby="basic-addon1" value="2015" (keyup)="changeFilters('sp', $event)">
-                        </div>            
-                      </div>
-                      <div class="item">
-                        <div class="input-group mb-3">
-                          <span class="input-group-text" id="basic-addon1">Periodo final</span>
-                          <input #endPeriod type="text" class="form-control" placeholder="Periodo final" aria-label="Periodo final" aria-describedby="basic-addon1" value="2024" (keyup)="changeFilters('ep', $event)">
-                        </div>
-                      </div>
+                  </div>
+                  <div class="filter-container">
+                    <div class="item">
+                      <a (click)="cleanFilters(); piramidal = false;" cButton class="me-1" color="danger">Limpiar filtros</a>
+                      
                     </div>
-                    <div class="filter-container">
-                      <hr>
-                      <div class="item">                    
-                        <input #checkbox class="form-check-input" type="checkbox" value="" id="allUrban" (click)="allUrban = !allUrban ;allRural = false; provRural = false; townRural = false; changeFilters('','')">
-                        <label class="form-check-label" for="allUrban">
-                            Urbano
-                        </label><br>
-            
-                        <input #checkbox class="form-check-input" type="checkbox" value="" id="provUrban" (click)="provUrban = !provUrban; townUrban = false; changeFilters('','')">
-                        <label class="form-check-label" for="provUrban">
-                            Provincia
-                        </label><br>
-            
-                        <input #checkbox class="form-check-input" type="checkbox" value="" id="townUrban" (click)="townUrban = !townUrban; provUrban = false; changeFilters('','')">
-                        <label class="form-check-label" for="townUrban">
-                            Comunas
-                        </label><br>
-                      </div> 
-                      <div class="item">
-                        <input #checkbox class="form-check-input" type="checkbox" value="" id="allRural" (click)="allRural = !allRural; allUrban = false; provUrban = false; townUrban = false;changeFilters('','')">
-                        <label class="form-check-label" for="allRural">
-                            Rural
-                        </label><br>
-            
-                        <input #checkbox class="form-check-input" type="checkbox" value="" id="provRural" (click)="provRural = !provRural; townRural = false; changeFilters('','')">
-                        <label class="form-check-label" for="provRural">
-                            Provincia
-                        </label><br>
-            
-                        <input #checkbox class="form-check-input" type="checkbox" value="" id="townRural" (click)="townRural = !townRural; provRural = false; changeFilters('','')">
-                        <label class="form-check-label" for="townRural">
-                            Comunas
-                        </label>  
-                      </div>
-                    </div>
-                    <div class="filter-container">
-                      <div class="item">
-                        <a (click)="cleanFilters(); piramidal = false;" cButton class="me-1" color="danger">Limpiar filtros</a>
-                        
-                      </div>
-                    </div>
-                  </c-card-body>
-                </c-card>
-              </div>
+                  </div>
+                </c-card-body>
+              </c-card>
+            </div>
           </c-card-body>
         </c-card>
 
