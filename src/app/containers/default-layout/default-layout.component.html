@@ -7,7 +7,7 @@
 >
   <c-sidebar-brand
     [brandFull]="{
-      src: 'assets/images/stgo.png',
+      src: 'assets/images/stgo-bordered.png',
       width: 200,
       height: 46,
       alt: 'CoreUI Logo'
@@ -60,7 +60,25 @@
       <button cButton color="primary" (click)="confirmLogout()">Si</button>
     </c-modal-footer>
   </c-modal>
+
+  <c-modal [visible]="askCloseSession" (visibleChange)="handleAskCloseSession($event)">
+    <c-modal-header>
+      <h5 cModalTitle>¿Sigues ahí?</h5>
+      <button (click)="toggleAskCloseSession()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body *ngIf=" closeSessionTimer > 0 ">Su sesión expirará en {{ closeSessionTimer }} segundos ¿desea seguir contectado?</c-modal-body>
+    <c-modal-body *ngIf=" closeSessionTimer <= 0 ">Cerando sesión</c-modal-body>
+    <c-modal-footer *ngIf=" closeSessionTimer > 0 ">
+      <button (click)="confirmLogout()" cButton color="secondary">
+        No
+      </button>
+      <button cButton color="primary" (click)="mantainSession()">Si</button>
+    </c-modal-footer>
+  </c-modal>
+
   <app-default-footer />
 </div>
+
+
 
 

@@ -30,6 +30,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
       if ( exp.getTime() <= timestamp.getTime() ) {
         localStorage.clear();
+        localStorage.setItem('expired-session','yes');
         this.router.navigateByUrl('/login');
         clone = request;
         return next.handle(clone).pipe(

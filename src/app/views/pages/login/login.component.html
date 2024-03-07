@@ -50,7 +50,7 @@
               </form>
             </c-card-body>
           </c-card>
-          <c-card [ngStyle]="{'width.%': 44}" class="text-white bg-primary py-5">
+          <c-card class="text-white bg-primary py-5">
             <c-card-body class="text-center">
               <div>
                 <h2>Datos publicos</h2>
@@ -69,3 +69,14 @@
     </c-row>
   </c-container>
 </div>
+
+<c-modal [visible]="closedSession">
+  <c-modal-header>
+    <h5 cModalTitle>Sesión cerrada</h5>
+    <button (click)="toggleClosedSession()" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>Su sesión ha expirado, por favor vuelva a ingresar.</c-modal-body>
+  <c-modal-footer>
+    <button cButton color="primary" (click)="toggleClosedSession()">Entendido</button>
+  </c-modal-footer>
+</c-modal>

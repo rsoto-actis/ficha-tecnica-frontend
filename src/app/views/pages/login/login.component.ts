@@ -7,6 +7,7 @@ import {
 import { Router } from '@angular/router';
 import { first } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { GeneralService } from 'src/app/core/services/general.service';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +15,8 @@ import { AuthService } from 'src/app/core/services/auth.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit{
+
+  public closedSession : boolean = false;
 
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
@@ -30,7 +33,8 @@ export class LoginComponent implements OnInit{
   constructor(
     private router         : Router,
     private formBuilder    : FormBuilder,
-    private authService    : AuthService
+    private authService    : AuthService,
+    private genService     : GeneralService
   ) {
 
     this.loginData = this.formBuilder.group({
@@ -41,9 +45,14 @@ export class LoginComponent implements OnInit{
 
   ngOnInit(): void {
 
-      if ( localStorage.getItem('token') != "" && localStorage.getItem('token') != null ){
-        this.router.navigateByUrl('/dashboard');
-      }
+    if ( localStorage.getItem('expired-session') == 'yes' ){
+      this.toggleClosedSession();
+      localStorage.setItem('expired-session', 'no');
+    }
+
+    if ( localStorage.getItem('token') != "" && localStorage.getItem('token') != null ){
+      this.router.navigateByUrl('/dashboard');
+    }
   }
 
   public showPublicData(){
@@ -73,24 +82,31 @@ export class LoginComponent implements OnInit{
           .pipe(first())
           .subscribe(
             ( result : any ) => {
-              localStorage.setItem('token', result.token);
+              if ( result.token != null && result.token != "" ){
+                localStorage.setItem('token', result.token);
 
-              this.router.navigateByUrl('/dashboard');
+                this.router.navigateByUrl('/dashboard');
 
-              this.loginError = false;
+                this.loginError = false;
+              }
+              else{
+                this.loginError = true;
+                this.message    = "Credenciales incorrectas.";   
+              }
+              
 
             },
             ( error : any) => {
               console.log(error)
               try{
                 
-                let json = JSON.parse(error.error.text.replace("\'","\"").replace("\'","\"").replace("\'","\"").replace("\'","\""));
+                /*let json = JSON.parse(error.error.text.replace("\'","\"").replace("\'","\"").replace("\'","\"").replace("\'","\""));
 
                 localStorage.setItem('token', json.token);
 
                 this.router.navigateByUrl('/dashboard');
 
-                this.loginError = false;
+                this.loginError = false;*/
               }
               catch(e){
                 console.log(e)
@@ -103,7 +119,6 @@ export class LoginComponent implements OnInit{
           );
       }
       catch(e){
-        console.log("2")
         console.log(e)
         this.loginError = true;
         this.message    = "Error de servidor, por favor contacte a soporte.";
@@ -114,6 +129,10 @@ export class LoginComponent implements OnInit{
       this.loginError = false;
       this.router.navigateByUrl('/dashboard');*/
     }
+  }
+
+  public toggleClosedSession(){
+    this.closedSession = !this.closedSession;
   }
 
   

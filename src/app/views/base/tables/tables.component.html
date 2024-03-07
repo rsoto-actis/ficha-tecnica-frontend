@@ -16,7 +16,7 @@
                     <label for="townSelect">Comuna</label><br/>
                     <select (change)="changeFilters('town', $event)" style="color: black" id="townSelect" class="form-select" aria-label="Default select example">
                       <option selected>Selecciona una comuna</option>
-                      <option *ngFor="let col of townsList" [value]="col.id">{{ col.name }}</option>
+                      <option *ngFor="let col of townsList" [value]="col.idComuna">{{ col.nomComuna }}</option>
                     </select>
                   </div>
                   <div class="item">

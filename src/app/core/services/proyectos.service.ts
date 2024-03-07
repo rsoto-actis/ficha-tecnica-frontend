@@ -22,7 +22,6 @@ export class ProyectosService {
   }
 
   public getAllTowns(): Observable<Array<any>> {
-    console.log(`${this.url_base}api/ficha-tecnica/towns`)
     return this.http.get<Array<any>>(
       `${this.url_base}api/ficha-tecnica/towns`
     );
