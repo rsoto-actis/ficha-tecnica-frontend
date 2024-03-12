@@ -109,7 +109,14 @@
       <c-card-header>
         <strong>Proyectos registrados</strong> <small></small>
       </c-card-header>
-      <c-card-body style="height: 60vh; overflow-y: scroll;">
+      <c-card-body style="height: 60vh; overflow-y: scroll;" *ngIf="filteredData.length == 0">
+        <div class="text-center align-middle">
+          <c-spinner color="primary"></c-spinner>
+          <h4>Cargando datos</h4>
+        </div>
+        
+      </c-card-body>
+      <c-card-body style="height: 60vh; overflow-y: scroll;" *ngIf="filteredData.length > 0">
           <table cTable>
             <thead>
             <tr>
