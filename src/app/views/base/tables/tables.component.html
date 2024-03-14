@@ -109,7 +109,7 @@
       <c-card-header>
         <strong>Proyectos registrados</strong> <small></small>
       </c-card-header>
-      <c-card-body style="height: 60vh; overflow-y: scroll;" *ngIf="filteredData.length == 0">
+      <c-card-body style="height: 60vh; overflow-y: scroll; display: flex; align-items: center; justify-content: center;" *ngIf="filteredData.length == 0">
         <div class="text-center align-middle">
           <c-spinner color="primary"></c-spinner>
           <h4>Cargando datos...</h4>

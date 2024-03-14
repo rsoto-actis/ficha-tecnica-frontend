@@ -51,12 +51,10 @@ export class ProyectosService {
     );
   }
 
-
-  /*public putCicle(cicle: CicleModel): Observable<ResultModel> {
-    return this.http.put<ResultModel>(
-      `${this.url_base}/api/cicle`, cicle
+  public getExtraFichaTecnicaData( id : number ): Observable<any> {
+    return this.http.get<any>(
+      `${this.url_base}api/caracteristcas-proyectos/proyectosCaractaristicasFindId/${id}`
     );
-  }*/
-
-  //-- No todos los proyectos tienen magnitud, lo que limita las respuestas del procedimiento almacenado. No se puede filtrar por "rural"
+  }
+  
 }

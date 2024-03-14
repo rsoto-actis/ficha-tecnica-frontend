@@ -10,11 +10,11 @@ export const navItems: INavData[] = [
       text: 'NEW'
     }*/
   },
-  {
+  /*{
     name: 'Datos públicos',
     url: '/base/tables',
     iconComponent: { name: 'cil-star' }
-  },
+  },*/
   {
     name: 'Proyectos',
     url: '/projects',
@@ -27,6 +27,10 @@ export const navItems: INavData[] = [
       {
         name: 'Listado',
         url: '/projects/category-assign'
+      },
+      {
+        name: 'Favoritos',
+        url: '/projects/favourites'
       },
     ]
   },

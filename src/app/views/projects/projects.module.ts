@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ButtonModule, CardModule, CollapseModule, DropdownComponent, DropdownModule, FormModule, GridModule, ModalModule, TableModule } from '@coreui/angular';
+import { ButtonModule, CardModule, CollapseModule, DropdownComponent, DropdownModule, FormModule, GridModule, ModalModule, SpinnerModule, TableModule } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
 
 import { 
@@ -10,11 +10,13 @@ import {
 } from '@angular/forms';
 import { CategoryAssignComponent } from './category-assign/category-assign.component';
 import { ProjectsRoutingModule } from './projects-routing.module';
+import { FavouritesComponent } from './favourites/favourites.component';
 
 
 @NgModule({
   declarations: [
-    CategoryAssignComponent
+    CategoryAssignComponent,
+    FavouritesComponent
   ],
   imports: [
     CommonModule,
@@ -30,7 +32,8 @@ import { ProjectsRoutingModule } from './projects-routing.module';
     ModalModule,
     ProjectsRoutingModule,
     DropdownModule,
-    ModalModule
+    ModalModule,
+    SpinnerModule
   ]
 })
 export class ProjectsModule {

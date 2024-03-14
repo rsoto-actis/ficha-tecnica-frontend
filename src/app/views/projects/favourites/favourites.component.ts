@@ -5,12 +5,12 @@ import { ItemsService } from 'src/app/core/services/items.service';
 import { ProyectosService } from 'src/app/core/services/proyectos.service';
 
 @Component({
-  selector: 'app-category-assign',
+  selector: 'app-favourites',
   standalone: false,
-  templateUrl: './category-assign.component.html',
-  styleUrl: './category-assign.component.scss'
+  templateUrl: './favourites.component.html',
+  styleUrl: './favourites.component.scss'
 })
-export class CategoryAssignComponent {
+export class FavouritesComponent {
 
 
   @ViewChildren('checkbox')   checkboxes!    : QueryList<ElementRef>;

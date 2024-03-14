@@ -2,7 +2,7 @@
     <c-card-header>
         <div class="flex-container" style="width: 100%; overflow: hidden;">
             <div style="float: left">
-                <h4 class="card-title mb-0" id="traffic">Listado de proyectos</h4>
+                <h4 class="card-title mb-0" id="traffic">Proyectos favoritos</h4>
             </div>
             <div style="float: right;">
                 <a (click)="toggleCollapse(0)" cButton class="me-1" color="warning" *ngIf="collapses[0]">Cerrar filtros</a>
@@ -107,7 +107,6 @@
         <table cTable>
             <thead>
                 <tr>
-                    <th style="width: 5vw;">Favorito</th>
                     <th scope="col">Comuna</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Alcance</th>
@@ -115,7 +114,6 @@
                     <th></th>
                 </tr>
                 <tr>
-                    <th style="width: 5vw;"></th>
                     <th>
                         <input type="text" class="form-control" placeholder="" aria-label="Username"
                             aria-describedby="basic-addon1" (keyup)="filterBy('town', $event)">
@@ -150,9 +148,6 @@
         <table cTable>
             <tbody>
               <tr class="text-center" *ngFor='let ts of filteredData'>
-                  <td style="width: 5vw;">
-                    <input class="form-check-input" type="checkbox" value="" [ngModel]="ts.favoritos == 1"  (click)="changeFavorite(ts)">
-                  </td>
                   <td>{{ts.town_name}}</td>
                   <td>{{ts.name}}</td>
                   <td>{{ts.alcance_code}}</td>
@@ -175,59 +170,5 @@
 </c-card>
 
 
-  <c-modal id="liveDemoModal" alignment="center" [visible]="liveDemoVisible" (visibleChange)="handleLiveDemoChange($event)" size="xl">
-    <c-modal-header>
-      <h5 cModalTitle>Asignar categoría</h5>
-      <button (click)="closeModal()" cButtonClose></button>
-    </c-modal-header>
-    <c-modal-body>
-        <h6><b>Nombre del proyecto: </b>{{ choosenProject.name }}</h6>
-        <h6><b>Comuna: </b>{{ choosenProject.town_name }}</h6>
-        <h6><b>Alcance: </b>{{ choosenProject.alcance_nombre }}</h6>
 
-        <hr>
-
-        <table cTable>
-            <thead>
-                <th class="text-center">Piramidal</th>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="text-center">
-                        <input #piramidalEdit class="form-check-input" type="checkbox" value="" id="piramidalEdit">
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </c-modal-body>
-    <c-modal-footer>
-      <button (click)="closeModal()" cButton color="secondary">
-        Cerrar ventana
-      </button>
-      <button cButton color="primary" (click)="confirmChangeFav()">Guardar cambios</button>
-    </c-modal-footer>
-  </c-modal>
-
-
-  <!-- cambio en check de favoritos -->
-  <c-modal id="changeFavoriteModal" alignment="center" [visible]="favFlag" size="lg">
-    <c-modal-header>
-      <h5 cModalTitle>Favoritos</h5>
-      <button (click)="closeFavModal()" cButtonClose></button>
-    </c-modal-header>
-    <c-modal-body *ngIf="proyectFavAux.favoritos == 0">
-        <h4>¿Desea agregar este proyecto a favoritos?</h4>
-        <p>Esta acción actualizará el proyecto inmediatamente en nuestros registros</p>
-    </c-modal-body>
-    <c-modal-body *ngIf="proyectFavAux.favoritos != 0">
-        <h4>¿Desea eliminar este proyecto de favoritos?</h4>
-        <p>Esta acción actualizará el proyecto inmediatamente en nuestros registros</p>
-    </c-modal-body>
-    <c-modal-footer>
-      <button class="text-white" (click)="closeFavModal()" cButton color="danger">
-        No
-      </button>
-      <button class="text-white" cButton color="success" (click)="confirmChangeFav()">Si</button>
-    </c-modal-footer>
-  </c-modal>
 
