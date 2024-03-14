@@ -23,6 +23,7 @@ export class CategoryAssignComponent {
   public extraProjectData : any     = {}; 
 
   public proyectFavAux    : any     = {};
+  public proyectPirAux    : any     = {};
 
   public collapses : any[] = [false, false, false, false];
 
@@ -61,6 +62,7 @@ export class CategoryAssignComponent {
   public townRural : boolean = false;
   public piramidal : boolean = false;
   public favFlag   : boolean = false;
+  public pirFlag   : boolean = false;
 
   public showMenu    : string = '';
   public showSubMenu : string = '';
@@ -515,6 +517,36 @@ export class CategoryAssignComponent {
       }
     }
     this.favFlag = false;
+
+  }
+
+  public changePiramidal( ts : any ){
+    this.proyectPirAux = ts;
+    this.closePirModal();
+  }
+
+  public closePirModal(){
+    this.pirFlag = !this.pirFlag;
+  }
+
+  public confirmChangePir(){    
+
+    let index : number = this.search(this.filteredData, this.proyectPirAux.id);
+
+    if ( index >= 0 ){
+    
+      if ( this.proyectPirAux.piramidal == 0 ){
+        this.proyectPirAux.piramidal == 1;
+
+        this.filteredData[index].piramidal = 1;
+        this.projects[index].piramidal     = 1;
+      }
+      else{
+        this.filteredData[index].piramidal = 0;
+        this.projects[index].piramidal     = 0;
+      }
+    }
+    this.pirFlag = false;
 
   }
 

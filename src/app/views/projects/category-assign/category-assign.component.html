@@ -107,7 +107,8 @@
         <table cTable>
             <thead>
                 <tr>
-                    <th style="width: 5vw;">Favorito</th>
+                    <th style="width: 5vw;">Emblemático</th>
+                    <th style="width: 5vw;">Piramidal</th>
                     <th scope="col">Comuna</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Alcance</th>
@@ -115,6 +116,7 @@
                     <th></th>
                 </tr>
                 <tr>
+                    <th style="width: 5vw;"></th>
                     <th style="width: 5vw;"></th>
                     <th>
                         <input type="text" class="form-control" placeholder="" aria-label="Username"
@@ -152,6 +154,9 @@
               <tr class="text-center" *ngFor='let ts of filteredData'>
                   <td style="width: 5vw;">
                     <input class="form-check-input" type="checkbox" value="" [ngModel]="ts.favoritos == 1"  (click)="changeFavorite(ts)">
+                  </td>
+                  <td style="width: 5vw;">
+                    <input class="form-check-input" type="checkbox" value="" [ngModel]="ts.piramidal == 1"  (click)="changePiramidal(ts)">
                   </td>
                   <td>{{ts.town_name}}</td>
                   <td>{{ts.name}}</td>
@@ -212,15 +217,15 @@
   <!-- cambio en check de favoritos -->
   <c-modal id="changeFavoriteModal" alignment="center" [visible]="favFlag" size="lg">
     <c-modal-header>
-      <h5 cModalTitle>Favoritos</h5>
+      <h5 cModalTitle>Emblematicos</h5>
       <button (click)="closeFavModal()" cButtonClose></button>
     </c-modal-header>
     <c-modal-body *ngIf="proyectFavAux.favoritos == 0">
-        <h4>¿Desea agregar este proyecto a favoritos?</h4>
+        <h4>¿Desea agregar este proyecto a emblematicos?</h4>
         <p>Esta acción actualizará el proyecto inmediatamente en nuestros registros</p>
     </c-modal-body>
     <c-modal-body *ngIf="proyectFavAux.favoritos != 0">
-        <h4>¿Desea eliminar este proyecto de favoritos?</h4>
+        <h4>¿Desea eliminar este proyecto de emblematicos?</h4>
         <p>Esta acción actualizará el proyecto inmediatamente en nuestros registros</p>
     </c-modal-body>
     <c-modal-footer>
@@ -230,4 +235,29 @@
       <button class="text-white" cButton color="success" (click)="confirmChangeFav()">Si</button>
     </c-modal-footer>
   </c-modal>
+
+
+   <!-- cambio en check de piramidal -->
+   <c-modal id="changePiramidalModal" alignment="center" [visible]="pirFlag" size="lg">
+    <c-modal-header>
+      <h5 cModalTitle>Piramidales</h5>
+      <button (click)="closePirModal()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body *ngIf="proyectFavAux.favoritos == 0">
+        <h4>¿Desea agregar este proyecto a piramidales?</h4>
+        <p>Esta acción actualizará el proyecto inmediatamente en nuestros registros</p>
+    </c-modal-body>
+    <c-modal-body *ngIf="proyectFavAux.favoritos != 0">
+        <h4>¿Desea eliminar este proyecto de piramidales?</h4>
+        <p>Esta acción actualizará el proyecto inmediatamente en nuestros registros</p>
+    </c-modal-body>
+    <c-modal-footer>
+      <button class="text-white" (click)="closePirModal()" cButton color="danger">
+        No
+      </button>
+      <button class="text-white" cButton color="success" (click)="confirmChangePir()">Si</button>
+    </c-modal-footer>
+  </c-modal>
+
+  <!-- verificar los checkbox -->
 
