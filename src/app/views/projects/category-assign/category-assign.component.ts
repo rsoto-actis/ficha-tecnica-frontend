@@ -501,7 +501,8 @@ export class CategoryAssignComponent {
 
   public confirmChangeFav(){    
 
-    let index : number = this.search(this.filteredData, this.proyectFavAux.id);
+    let index  : number  = this.search(this.filteredData, this.proyectFavAux.id);
+    let emblem : boolean = false;
 
     if ( index >= 0 ){
     
@@ -510,6 +511,7 @@ export class CategoryAssignComponent {
 
         this.filteredData[index].favoritos = 1;
         this.projects[index].favoritos     = 1;
+        emblem                             = true;
       }
       else{
         this.filteredData[index].favoritos = 0;
@@ -518,6 +520,36 @@ export class CategoryAssignComponent {
     }
     this.favFlag = false;
 
+    /* verificamos si hay un registro en la tabla 'categorias_proyectos' que coincida con el proyecto*/
+    this.proyectoService
+      .getExtraFichaTecnicaData(this.proyectFavAux.id)
+      .pipe(first())
+      .subscribe(
+        ( result: any ) => {
+          if ( result != null ){
+            /* PUT */
+
+            let json : any = {
+              id          : result.id,
+              proyecto_id : this.proyectFavAux.id,
+              piramidal   : false,
+              emblematico : emblem,
+              user_id     : 0,
+            }
+          }
+          else{
+            /* POST */
+
+            let json : any = {
+              proyecto_id : this.proyectFavAux.id,
+              piramidal   : false,
+              emblematico : emblem,
+              user_id     : 0,
+            }
+          }
+        },
+        ( error : any ) => {}
+      )
   }
 
   public changePiramidal( ts : any ){
