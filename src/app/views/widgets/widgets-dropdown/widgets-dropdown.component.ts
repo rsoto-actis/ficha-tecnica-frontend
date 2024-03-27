@@ -49,6 +49,19 @@ export class WidgetsDropdownComponent implements OnInit, AfterContentInit {
     }
   }
 
+  public cleanFilters(){
+    this.dsbService.selectedTown.emit( {
+      data : {
+        idComuna     : 0,
+        idProvincia  : 0 ,
+        idRegion     : 0,
+        nomProvincia : ' -- ',
+        nomRegion    : ' -- ',
+        nomComuna    : 'Todas',
+      }
+    })
+  }
+
   private getFilteredProjects( 
     category    : string,
     subcategory : string,

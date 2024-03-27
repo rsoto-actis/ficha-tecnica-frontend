@@ -38,14 +38,14 @@
               <table cTable>
                 <thead>
                   <tr class="text-center">
-                    <th scope="col">Nombre comuna</th>
-                    <th scope="col">Nombre proyecto</th>
+                    <th style="width: 15vw;" scope="col">Comunas</th>
+                    <th style="width: 15vw;" scope="col">Nombre proyecto</th>
                     <th scope="col">Alcance</th>
                     <th scope="col">Fecha</th>
                   </tr>
-                  <tr class="text-center" *ngFor='let ts of favProjects'>
-                    <td>{{ ts.town_name }}</td>
-                    <td>{{ ts.name }}</td>
+                  <tr class="text-center" *ngFor='let ts of filteredFavProj'>
+                    <td style="width: 15vw; text-align: justify;">{{ ts.comunas }}</td>
+                    <td style="width: 15vw; text-align: justify;">{{ ts.name }}</td>
                     <td>{{ ts.alcance_nombre }}</td>
                     <td>{{ formatDate(ts.created) }}</td>
                   </tr>
@@ -170,7 +170,7 @@
     </c-card>
   </c-col>
 </c-row>
-<c-card class="mb-4">
+<!--<c-card class="mb-4">
   <c-card-body>
     <c-row>
       <c-col sm="5">
@@ -364,4 +364,4 @@
       </c-card-body>
     </c-card>
   </c-col>
-</c-row>
+</c-row>-->

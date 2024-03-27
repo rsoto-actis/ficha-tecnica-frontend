@@ -74,8 +74,12 @@ export class FavouritesComponent {
       .pipe(first())
       .subscribe(
         ( result: any ) => {
-          this.projects     = result;
-          this.filteredData = result;
+          for ( let i = 0 ; i < result.length ; i ++ ){
+            if ( result[i].favoritos == 1 ){
+              this.projects.push(result[i]);
+              this.filteredData.push(result[i]);
+            }
+          }
         },
         ( error : any) => {
           console.log(error)
@@ -146,7 +150,7 @@ export class FavouritesComponent {
       this.filteredData = this.filterData(data);
     }
     catch(e){
-      console.log("filter table: " + e)
+      console.log("filter table: " + e);
     }
   }
 

@@ -172,7 +172,7 @@ export class CategoryAssignComponent {
       }
       if ( params.town != '' ) {
         aux = aux.filter((el) => {
-          return (el.town_name+"").toUpperCase().includes(params.town.toUpperCase());
+          return (el.comunas+"").toUpperCase().includes(params.town.toUpperCase());
         });
       }
 

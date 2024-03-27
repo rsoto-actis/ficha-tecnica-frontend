@@ -28,10 +28,10 @@ export const navItems: INavData[] = [
         name: 'Listado',
         url: '/projects/category-assign'
       },
-      {
-        name: 'Favoritos',
+      /*{
+        name: 'Emblemáticos',
         url: '/projects/favourites'
-      },
+      },*/
     ]
   },
   /*{

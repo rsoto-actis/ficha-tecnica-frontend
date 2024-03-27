@@ -27,9 +27,10 @@ interface IUser {
 })
 export class DashboardComponent implements OnInit {
 
-  public favProjects  : any[] = [];
-  public pirProjects  : any[] = [];
-  public selectedTown : any = {
+  public favProjects     : any[] = [];
+  public filteredFavProj : any[] = [];
+  public pirProjects     : any[] = [];
+  public selectedTown    : any = {
     idComuna     : 0,
     idProvincia  : 0 ,
     idRegion     : 0,
@@ -137,8 +138,10 @@ export class DashboardComponent implements OnInit {
     this.initCharts();
 
     this.dsbService.selectedTown.subscribe( ( data : any )=>{
-      this.selectedTown = data;
-      this.getFilteredProjects('', '', '', '', '', data.idComuna , 0);
+      this.selectedTown = data.data;
+      //this.getFilteredProjects('', '', '', '', '', data.idComuna , 0);
+
+      this.filteredFavProj = this.filterData(data.data);
     })
   }
 
@@ -160,6 +163,7 @@ export class DashboardComponent implements OnInit {
           for ( let i = 0 ; i < result.length ; i ++ ){
             if ( result[i].favoritos != 0 ){
               this.favProjects.push(result[i]);
+              this.filteredFavProj.push(result[i]);
             }
           }
 
@@ -186,5 +190,24 @@ export class DashboardComponent implements OnInit {
 
   public formatDate( date : string ){
     return date[8] + date[9] + "/" + date[5] + date[6] + "/" + date[0] + date[1] + date[2] + date[3];
+  }
+
+  private filterData( params : any ) {
+    let aux: any[] = [];
+    try{ 
+      aux = this.favProjects;   
+
+      if ( params.nomComuna != '' && params.nomComuna != 'Todas') {
+        aux = aux.filter((el) => {
+          return (el.comunas+"").toUpperCase().includes(params.nomComuna.toUpperCase());
+        });
+      }
+      
+    }
+    catch(e){
+      //console.log(e)
+    }
+    return aux;
+      
   }
 }

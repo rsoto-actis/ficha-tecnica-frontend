@@ -2,7 +2,7 @@
     <c-card-header>
         <div class="flex-container" style="width: 100%; overflow: hidden;">
             <div style="float: left">
-                <h4 class="card-title mb-0" id="traffic">Proyectos favoritos</h4>
+                <h4 class="card-title mb-0" id="traffic">Proyectos emblemáticos</h4>
             </div>
             <div style="float: right;">
                 <a (click)="toggleCollapse(0)" cButton class="me-1" color="warning" *ngIf="collapses[0]">Cerrar filtros</a>
@@ -15,13 +15,13 @@
             <c-card class="shadow mt-3" style="z-index: 100;">
                 <c-card-body>
                 <div class="filter-container">
-                    <div class="item">
+                    <!--<div class="item">
                     <label for="townSelect">Comuna</label><br/>
                     <select (change)="changeFilters('town', $event)" style="color: black" id="townSelect" class="form-select" aria-label="Default select example">
                         <option selected>Selecciona una comuna</option>
                         <option *ngFor="let col of townsList" [value]="col.idComuna">{{ col.nomComuna }}</option>
                     </select>
-                    </div>
+                    </div>-->
                     <div class="item">
                     <label for="townSelect">Categoría</label><br/> 
                     <select (change)="changeFilters('category', $event)" style="color: black" id="townSelect" class="form-select">
@@ -107,14 +107,14 @@
         <table cTable>
             <thead>
                 <tr>
-                    <th scope="col">Comuna</th>
+                    <th style="text-align: justify!; width: 20vw;" scope="col">Comunas</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Alcance</th>
                     <th scope="col">Fecha</th>
                     <th></th>
                 </tr>
                 <tr>
-                    <th>
+                    <th style="text-align: justify!; width: 20vw;">
                         <input type="text" class="form-control" placeholder="" aria-label="Username"
                             aria-describedby="basic-addon1" (keyup)="filterBy('town', $event)">
                     </th>
@@ -148,7 +148,7 @@
         <table cTable>
             <tbody>
               <tr class="text-center" *ngFor='let ts of filteredData'>
-                  <td>{{ts.town_name}}</td>
+                  <td style="text-align: justify!; width: 20vw;">{{ts.comunas}}</td>
                   <td>{{ts.name}}</td>
                   <td>{{ts.alcance_code}}</td>
                   <td>{{ formatDate(ts.created) }}</td>
