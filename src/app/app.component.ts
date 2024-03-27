@@ -56,7 +56,7 @@ export class AppComponent implements OnInit, OnDestroy {
       if ( localStorage.getItem('token') != "" && localStorage.getItem('token') != null ){
         let date = new Date();
         let diff = ( date.getTime() - this.lastMovement.getTime() ) / 1000;
-        console.log(diff)
+        //console.log(diff)
         if ( diff > environment.close_session_timeout ){
 
           this.genService.closeSessionAdvice.emit({

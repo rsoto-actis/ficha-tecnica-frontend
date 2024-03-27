@@ -3,6 +3,10 @@ import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 
 import { DashboardChartsData, IChartProps } from './dashboard-charts-data';
 
+import { DashboardService } from 'src/app/core/services/dashboard.service';
+import { ProyectosService } from 'src/app/core/services/proyectos.service';
+import { first } from 'rxjs';
+
 interface IUser {
   name: string;
   state: string;
@@ -22,7 +26,25 @@ interface IUser {
   styleUrls: ['dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  constructor(private chartsData: DashboardChartsData) {
+
+  public favProjects  : any[] = [];
+  public pirProjects  : any[] = [];
+  public selectedTown : any = {
+    idComuna     : 0,
+    idProvincia  : 0 ,
+    idRegion     : 0,
+    nomProvincia : ' -- ',
+    nomRegion    : ' -- ',
+    nomComuna    : 'Todas',
+  };
+
+  constructor(
+    private chartsData      : DashboardChartsData,
+    private dsbService      : DashboardService,
+    private proyectoService : ProyectosService, 
+  ) {
+
+    this.getFilteredProjects('', '', '', '', '', 0 , 0);
   }
 
   public users: IUser[] = [
@@ -113,6 +135,43 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.initCharts();
+
+    this.dsbService.selectedTown.subscribe( ( data : any )=>{
+      this.selectedTown = data;
+      this.getFilteredProjects('', '', '', '', '', data.idComuna , 0);
+    })
+  }
+
+  private getFilteredProjects( 
+    category    : string,
+    subcategory : string,
+    initDate    : string,
+    endDate     : string, 
+    type        : string,
+    town        : number,
+    prov        : number ){
+    this.favProjects = [];
+
+    this.proyectoService
+      .getProyectsWithFilters(category, subcategory, initDate, endDate, type, town, prov)
+      .pipe(first())
+      .subscribe(
+        ( result: any ) => {
+          for ( let i = 0 ; i < result.length ; i ++ ){
+            if ( result[i].favoritos != 0 ){
+              this.favProjects.push(result[i]);
+            }
+          }
+
+          this.dsbService.percents.emit({
+            total      : result.length,
+            emblematic : this.favProjects.length,
+            piramidal  : this.pirProjects.length
+          })
+        },
+        ( error : any) => {
+        }
+      );
   }
 
   initCharts(): void {
@@ -123,5 +182,9 @@ export class DashboardComponent implements OnInit {
     this.trafficRadioGroup.setValue({ trafficRadio: value });
     this.chartsData.initMainChart(value);
     this.initCharts();
+  }
+
+  public formatDate( date : string ){
+    return date[8] + date[9] + "/" + date[5] + date[6] + "/" + date[0] + date[1] + date[2] + date[3];
   }
 }

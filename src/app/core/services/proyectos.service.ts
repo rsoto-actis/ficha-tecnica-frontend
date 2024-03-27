@@ -56,5 +56,14 @@ export class ProyectosService {
       `${this.url_base}api/caracteristcas-proyectos/proyectosCaractaristicasFindId/${id}`
     );
   }
+
+  public editPostPiramidal( json : any ){
+    return this.http.put<Array<any>>(
+      `${this.url_base}api/caracteristcas-proyectos/proyectosCaractaristicasUpdate/${json.id}`,
+      json
+    );
+  }
+
+
   
 }

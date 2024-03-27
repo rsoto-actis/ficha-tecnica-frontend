@@ -1,4 +1,4 @@
-import { Component, ElementRef, QueryList, ViewChild, ViewChildren, viewChild } from '@angular/core';
+import { Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { first } from 'rxjs';
 import { ItemsService } from 'src/app/core/services/items.service';
@@ -69,7 +69,8 @@ export class CategoryAssignComponent {
 
   constructor(
     private proyectoService : ProyectosService,
-    private itemsService    : ItemsService
+    private itemsService    : ItemsService,
+    private elementRef      : ElementRef
   ){
     this.proyectoService
       .getProyectsWithFilters('','','','','',0,0)
@@ -458,8 +459,6 @@ export class CategoryAssignComponent {
     if ( this.category == null ){
       this.category = { id : 0, name : 'Seleccione una categoría'};
     }
-
-
   }
 
   private getFilteredProjects( 
@@ -490,13 +489,15 @@ export class CategoryAssignComponent {
     this.collapses[id] = !this.collapses[id];
   }
 
-  public changeFavorite( ts : any ){
+  public changeFavorite( event : any, ts : any ){
     this.proyectFavAux = ts;
-    this.closeFavModal();
+    this.favFlag = !this.favFlag;
   }
 
-  public closeFavModal(){
+  public closeFavModal( ts : any ){
     this.favFlag = !this.favFlag;
+    const checkbox = this.elementRef.nativeElement.querySelector(`#fav_${ts.id}`) as HTMLInputElement;
+    checkbox.checked = !checkbox.checked;
   }
 
   public confirmChangeFav(){    
@@ -520,45 +521,19 @@ export class CategoryAssignComponent {
     }
     this.favFlag = false;
 
-    /* verificamos si hay un registro en la tabla 'categorias_proyectos' que coincida con el proyecto*/
-    this.proyectoService
-      .getExtraFichaTecnicaData(this.proyectFavAux.id)
-      .pipe(first())
-      .subscribe(
-        ( result: any ) => {
-          if ( result != null ){
-            /* PUT */
-
-            let json : any = {
-              id          : result.id,
-              proyecto_id : this.proyectFavAux.id,
-              piramidal   : false,
-              emblematico : emblem,
-              user_id     : 0,
-            }
-          }
-          else{
-            /* POST */
-
-            let json : any = {
-              proyecto_id : this.proyectFavAux.id,
-              piramidal   : false,
-              emblematico : emblem,
-              user_id     : 0,
-            }
-          }
-        },
-        ( error : any ) => {}
-      )
+    this.editCategoryOfTheProject(this.projects[index]);
   }
 
-  public changePiramidal( ts : any ){
+  public changePiramidal( event : any, ts : any ){ 
     this.proyectPirAux = ts;
-    this.closePirModal();
+    this.pirFlag       = !this.pirFlag;
   }
 
-  public closePirModal(){
-    this.pirFlag = !this.pirFlag;
+  public closePirModal( ts : any ){
+    const checkbox   = this.elementRef.nativeElement.querySelector(`#pir_${ts.id}`) as HTMLInputElement;
+    checkbox.checked = !checkbox.checked;
+    this.pirFlag       = !this.pirFlag;
+    
   }
 
   public confirmChangePir(){    
@@ -589,5 +564,31 @@ export class CategoryAssignComponent {
       }
     }
     return -1;
+  }
+
+  private editCategoryOfTheProject( data : any ){
+
+    let json : any = {
+      id              : data.pcar_id,
+      created         : data.pcar_created,
+      modified        : data.pcar_modified,
+      piramidal       : data.piramidal,
+      favoritos       : data.favoritos,
+      user_id         : data.pcar_user_id,
+      favoritos_fecha : new Date(),
+      proyecto_id     : data.id
+    }
+
+    this.proyectoService
+      .editPostPiramidal(json)
+      .pipe(first())
+      .subscribe(
+        ( result: any ) => {
+          console.log(result)
+        },
+        ( error : any) => {
+        }
+      );
+    
   }
 }

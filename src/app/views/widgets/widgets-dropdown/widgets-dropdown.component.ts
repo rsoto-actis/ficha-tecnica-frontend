@@ -9,69 +9,116 @@ import {
 } from '@angular/core';
 import { getStyle } from '@coreui/utils';
 import { ChartjsComponent } from '@coreui/angular-chartjs';
+import { first } from 'rxjs';
+import { ProyectosService } from 'src/app/core/services/proyectos.service';
+import { DashboardService } from 'src/app/core/services/dashboard.service';
 
 @Component({
   selector: 'app-widgets-dropdown',
   templateUrl: './widgets-dropdown.component.html',
   styleUrls: ['./widgets-dropdown.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default
 })
+
 export class WidgetsDropdownComponent implements OnInit, AfterContentInit {
 
-  constructor(
-    private changeDetectorRef: ChangeDetectorRef
-  ) {}
+  public townsList  : any[] = [];
+  public projects   : any[] = [];
+  public embPercent : any   = "";
+  public pirPercent : any   = "";
 
-  data: any[] = [];
-  options: any[] = [];
+  public embChartData : any = {};
+
+
+  constructor(
+    private changeDetectorRef : ChangeDetectorRef,
+    private proyectoService   : ProyectosService,
+    private dsbService        : DashboardService
+  ) {
+
+    this.getAllTowns();
+  }
+
+  public changeFilters( event : any ){
+    for ( let i = 0 ; i < this.townsList.length ; i ++ ){
+      if ( this.townsList[i].idComuna == parseInt(event?.target.value + "") ){
+        this.dsbService.selectedTown.emit( {
+          data : this.townsList[i]
+        })
+        break;
+      }
+    }
+  }
+
+  private getFilteredProjects( 
+    category    : string,
+    subcategory : string,
+    initDate    : string,
+    endDate     : string, 
+    type        : string,
+    town        : number,
+    prov        : number ){
+    this.projects = [];
+
+    this.proyectoService
+      .getProyectsWithFilters(category, subcategory, initDate, endDate, type, town, prov)
+      .pipe(first())
+      .subscribe(
+        ( result: any ) => {
+          this.projects = result;
+        },
+        ( error : any) => {
+        }
+      );
+  }
+
+  private getAllTowns(){
+    this.proyectoService
+      .getAllTowns()
+      .pipe(first())
+      .subscribe(
+        ( result: any ) => {
+          this.townsList = result;
+        },
+        ( error : any) => {
+        }
+      );
+  }
+
+  data    : any[] = [];
+  options : any[] = [];
   labels = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-    'January',
-    'February',
-    'March',
-    'April'
+    'Total',
+    'Emblemático',
   ];
+  
   datasets = [
-    [{
-      label: 'My First dataset',
-      backgroundColor: 'transparent',
+    {
+      label: 'Total',
+      backgroundColor: 'rgba(255,255,255,.2)',
       borderColor: 'rgba(255,255,255,.55)',
       pointBackgroundColor: getStyle('--cui-primary'),
       pointHoverBorderColor: getStyle('--cui-primary'),
-      data: [65, 59, 84, 84, 51, 55, 40]
-    }], [{
-      label: 'My Second dataset',
-      backgroundColor: 'transparent',
-      borderColor: 'rgba(255,255,255,.55)',
-      pointBackgroundColor: getStyle('--cui-info'),
-      pointHoverBorderColor: getStyle('--cui-info'),
-      data: [1, 18, 9, 17, 34, 22, 11]
-    }], [{
-      label: 'My Third dataset',
+      data: [100],
+      fill: true
+    },
+    {
+      label: 'Emblemáticos',
       backgroundColor: 'rgba(255,255,255,.2)',
       borderColor: 'rgba(255,255,255,.55)',
       pointBackgroundColor: getStyle('--cui-warning'),
       pointHoverBorderColor: getStyle('--cui-warning'),
-      data: [78, 81, 80, 45, 34, 12, 40],
+      data: [50],
       fill: true
-    }], [{
-      label: 'My Fourth dataset',
+    },
+    {
+      label: 'Piramidales',
       backgroundColor: 'rgba(255,255,255,.2)',
       borderColor: 'rgba(255,255,255,.55)',
-      data: [78, 81, 80, 45, 34, 12, 40, 85, 65, 23, 12, 98, 34, 84, 67, 82],
-      barPercentage: 0.7
-    }]
+      pointBackgroundColor: getStyle('--cui-warning'),
+      pointHoverBorderColor: getStyle('--cui-warning'),
+      data: [100],
+      fill: true
+    }
   ];
   optionsDefault = {
     plugins: {
@@ -79,7 +126,7 @@ export class WidgetsDropdownComponent implements OnInit, AfterContentInit {
         display: false
       }
     },
-    maintainAspectRatio: false,
+    maintainAspectRatio: true,
     scales: {
       x: {
         grid: {
@@ -91,14 +138,14 @@ export class WidgetsDropdownComponent implements OnInit, AfterContentInit {
         }
       },
       y: {
-        min: 30,
-        max: 89,
+        min: 0,
+        max: 100,
         display: false,
         grid: {
           display: false
         },
         ticks: {
-          display: false
+          display: true
         }
       }
     },
@@ -116,20 +163,36 @@ export class WidgetsDropdownComponent implements OnInit, AfterContentInit {
   };
 
   ngOnInit(): void {
-    this.setData();
+    
   }
 
   ngAfterContentInit(): void {
+
+    this.dsbService.percents.subscribe( ( data : any ) => {
+      this.embPercent = ( (data.emblematic * 100)/data.total ) + "%";
+      this.pirPercent = ( (data.piramidal  * 100)/data.total ) + "%";
+
+      this.setData();
+      
+      this.datasets[0].data = [data.total];
+      this.datasets[1].data = [data.emblematic];
+      this.datasets[2].data = [data.piramidal];
+      this.changeDetectorRef.detectChanges();
+    })
+
     this.changeDetectorRef.detectChanges();
 
   }
 
   setData() {
-    for (let idx = 0; idx < 4; idx++) {
-      this.data[idx] = {
-        labels: idx < 3 ? this.labels.slice(0, 7) : this.labels,
-        datasets: this.datasets[idx]
-      };
+
+    this.data[0] = {
+      labels : ['Total', 'Emblemáticos'],
+      datasets: [this.datasets[0],this.datasets[1]]
+    }
+    this.data[1] = {
+      labels : ['Total', 'Piramidales'],
+      datasets: [this.datasets[0], this.datasets[2]]
     }
     this.setOptions();
   }
