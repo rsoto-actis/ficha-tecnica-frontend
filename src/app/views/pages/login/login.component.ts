@@ -84,6 +84,7 @@ export class LoginComponent implements OnInit{
             ( result : any ) => {
               if ( result.token != null && result.token != "" ){
                 localStorage.setItem('token', result.token);
+                localStorage.setItem('user_id', result.user_id);
 
                 this.router.navigateByUrl('/dashboard');
 

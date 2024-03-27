@@ -107,7 +107,7 @@ export class WidgetsDropdownComponent implements OnInit, AfterContentInit {
       borderColor: 'rgba(255,255,255,.55)',
       pointBackgroundColor: getStyle('--cui-warning'),
       pointHoverBorderColor: getStyle('--cui-warning'),
-      data: [50],
+      data: [100],
       fill: true
     },
     {
@@ -169,14 +169,18 @@ export class WidgetsDropdownComponent implements OnInit, AfterContentInit {
   ngAfterContentInit(): void {
 
     this.dsbService.percents.subscribe( ( data : any ) => {
-      this.embPercent = ( (data.emblematic * 100)/data.total ) + "%";
-      this.pirPercent = ( (data.piramidal  * 100)/data.total ) + "%";
+      let emb = parseInt( ((data.emblematic * 100)/data.total)  + "");
+      let pir = parseInt( ((data.piramidal  * 100)/data.total ) + "");
+      
+      this.embPercent = emb.toFixed(2) + "%";
+      this.pirPercent = pir.toFixed(2) + "%";
 
       this.setData();
       
       this.datasets[0].data = [data.total];
       this.datasets[1].data = [data.emblematic];
       this.datasets[2].data = [data.piramidal];
+      console.log(this.datasets)
       this.changeDetectorRef.detectChanges();
     })
 

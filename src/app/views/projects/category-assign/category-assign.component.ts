@@ -118,6 +118,8 @@ export class CategoryAssignComponent {
   }
 
   ngOnInit(): void {
+    this.projects     = [];
+    this.filteredData = [];
 
     this.proyectoService.filters.subscribe( ( data : any ) =>{
       this.projects     = data.data;
@@ -555,6 +557,8 @@ export class CategoryAssignComponent {
     }
     this.pirFlag = false;
 
+    this.editCategoryOfTheProject(this.projects[index]);
+
   }
 
   public search( array : any, id : any ): number{
@@ -568,27 +572,73 @@ export class CategoryAssignComponent {
 
   private editCategoryOfTheProject( data : any ){
 
+    //-- Declaramos variables auxiliares para transformar 1,0 en true,false
+    let pir     : boolean = false;
+    let emb     : boolean = false;
+    let created : Date = new Date();
+
+    if ( data.piramidal == 1 ){
+      pir = true;
+    }
+    if ( data.favoritos == 1 ){
+      emb = true;
+    }
+
+
+
     let json : any = {
       id              : data.pcar_id,
-      created         : data.pcar_created,
-      modified        : data.pcar_modified,
-      piramidal       : data.piramidal,
-      favoritos       : data.favoritos,
-      user_id         : data.pcar_user_id,
+      created         : this.reformatDate(data.pcar_created),
+      modified        : created,
+      piramidal       : pir,
+      favoritos       : emb,
+      user_id         : parseInt((localStorage.getItem('user_id') + "" ) ),
       favoritos_fecha : new Date(),
       proyecto_id     : data.id
     }
 
-    this.proyectoService
-      .editPostPiramidal(json)
+    if ( json.id == 0 ){
+      json.created = created;
+
+      this.proyectoService
+      .postExtraData(json)
       .pipe(first())
       .subscribe(
         ( result: any ) => {
-          console.log(result)
         },
         ( error : any) => {
         }
       );
+    }
+    else{
+      this.proyectoService
+      .editExtraData(json)
+      .pipe(first())
+      .subscribe(
+        ( result: any ) => {
+        },
+        ( error : any) => {
+        }
+      );
+    }
+
     
+    
+  }
+
+  public reformatDate( dateString : string ){
+    const dateParts = dateString.split(' '); 
+    const date      = dateParts[0]; 
+    const time      = dateParts[1]; 
+
+    const [year, month, day] = date.split('-');
+
+    const [hour, minute, second] = time.split(':');
+
+    const formattedDate = new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}.000Z`);
+
+    const formattedString = formattedDate.toISOString();
+
+    return formattedString;
   }
 }
